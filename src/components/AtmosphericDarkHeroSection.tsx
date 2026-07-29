@@ -4,9 +4,17 @@ export function AtmosphericDarkHeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Force play for aggressive mobile browsers (Safari/Opera)
-    if (videoRef.current) {
-      videoRef.current.play().catch(e => console.warn("Autoplay prevented", e));
+    const video = videoRef.current;
+    if (video) {
+      // Force Safari to recognize it as muted and inline
+      video.defaultMuted = true;
+      video.muted = true;
+      video.playsInline = true;
+      
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(e => console.warn("Autoplay prevented by browser", e));
+      }
     }
   }, []);
 
@@ -14,16 +22,13 @@ export function AtmosphericDarkHeroSection() {
     <section className="relative min-h-[75vh] lg:min-h-[80vh] w-full flex flex-col items-center justify-center overflow-hidden bg-[#121212] px-6 py-16 lg:py-28 text-center">
       <video
         ref={videoRef}
+        src="/videos/hero_video.mp4"
         autoPlay
         muted
         loop
         playsInline
-        preload="auto"
-        poster="/images/prod_1.jpg"
-        className="absolute inset-0 w-full h-full object-cover opacity-50"
-      >
-        <source src="/videos/hero_video.mp4" type="video/mp4" />
-      </video>
+        className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none"
+      />
       
       <div className="relative z-20 max-w-4xl mx-auto flex flex-col items-center">
         <span className="text-white/70 text-xs tracking-[0.35em] uppercase mb-6 font-light">
