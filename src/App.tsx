@@ -9,7 +9,7 @@ import { YasceramicsCharcoalFooter } from './components/YasceramicsCharcoalFoote
 
 function App() {
   return (
-    <div className="min-h-screen font-sans bg-[#FFFFFF] overflow-x-hidden">
+    <div className="min-h-screen font-sans bg-[#FFFFFF] overflow-x-clip">
       <BoutiqueStickyHeader />
       <main>
         <AtmosphericDarkHeroSection />
