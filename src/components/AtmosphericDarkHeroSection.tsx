@@ -1,33 +1,21 @@
-import { useEffect, useRef } from 'react';
-
 export function AtmosphericDarkHeroSection() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (video) {
-      // Force Safari to recognize it as muted and inline
-      video.defaultMuted = true;
-      video.muted = true;
-      video.playsInline = true;
-      
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(e => console.warn("Autoplay prevented by browser", e));
-      }
-    }
-  }, []);
-
   return (
     <section className="relative min-h-[75vh] lg:min-h-[80vh] w-full flex flex-col items-center justify-center overflow-hidden bg-[#121212] px-6 py-16 lg:py-28 text-center">
-      <video
-        ref={videoRef}
-        src="/videos/hero_video.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none"
+      <div 
+        className="absolute inset-0 w-full h-full opacity-50"
+        dangerouslySetInnerHTML={{
+          __html: `
+            <video
+              autoplay
+              loop
+              muted
+              playsinline
+              class="w-full h-full object-cover"
+            >
+              <source src="/videos/hero_video.mp4" type="video/mp4" />
+            </video>
+          `
+        }}
       />
       
       <div className="relative z-20 max-w-4xl mx-auto flex flex-col items-center">
