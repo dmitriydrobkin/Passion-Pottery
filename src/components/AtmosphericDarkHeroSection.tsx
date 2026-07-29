@@ -1,38 +1,50 @@
+import { useEffect, useRef } from 'react';
+
 export function AtmosphericDarkHeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Safari requires these to be set via JS, not just HTML attributes
+    video.muted = true;
+    (video as any).defaultMuted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+
+    const tryPlay = () => {
+      video.play().catch(() => {
+        // On first user touch/click, try again (iOS Safari Low Power Mode fallback)
+        const onInteraction = () => {
+          video.play().catch(() => {});
+        };
+        document.addEventListener('touchstart', onInteraction, { once: true });
+        document.addEventListener('click', onInteraction, { once: true });
+      });
+    };
+
+    if (video.readyState >= 3) {
+      tryPlay();
+    } else {
+      video.addEventListener('canplay', tryPlay, { once: true });
+    }
+  }, []);
+
   return (
     <section className="relative min-h-[75vh] lg:min-h-[80vh] w-full flex flex-col items-center justify-center overflow-hidden bg-[#121212] px-6 py-16 lg:py-28 text-center">
-      <div 
-        className="absolute inset-0 w-full h-full"
-        dangerouslySetInnerHTML={{
-          __html: `
-            <video
-              id="hero-video"
-              autoplay
-              loop
-              muted
-              playsinline
-              webkit-playsinline
-              x5-playsinline
-              x5-video-player-type="h5"
-              preload="auto"
-              style="width:100%;height:100%;object-fit:cover;opacity:0.5;display:block;"
-              src="/videos/hero_video.mp4"
-            ></video>
-            <script>
-              (function() {
-                var v = document.getElementById('hero-video');
-                if (v) {
-                  v.muted = true;
-                  v.defaultMuted = true;
-                  v.setAttribute('muted', '');
-                  var p = v.play();
-                  if (p !== undefined) { p.catch(function(){}); }
-                }
-              })();
-            </script>
-          `
-        }}
-      />
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover opacity-50"
+      >
+        <source src="/videos/hero_video.mp4" type="video/mp4" />
+      </video>
       
       <div className="relative z-20 max-w-4xl mx-auto flex flex-col items-center">
         <span className="text-white/70 text-xs tracking-[0.35em] uppercase mb-6 font-light">
