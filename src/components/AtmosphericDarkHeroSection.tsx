@@ -2,18 +2,34 @@ export function AtmosphericDarkHeroSection() {
   return (
     <section className="relative min-h-[75vh] lg:min-h-[80vh] w-full flex flex-col items-center justify-center overflow-hidden bg-[#121212] px-6 py-16 lg:py-28 text-center">
       <div 
-        className="absolute inset-0 w-full h-full opacity-50"
+        className="absolute inset-0 w-full h-full"
         dangerouslySetInnerHTML={{
           __html: `
             <video
+              id="hero-video"
               autoplay
               loop
               muted
               playsinline
-              class="w-full h-full object-cover"
-            >
-              <source src="/videos/hero_video.mp4" type="video/mp4" />
-            </video>
+              webkit-playsinline
+              x5-playsinline
+              x5-video-player-type="h5"
+              preload="auto"
+              style="width:100%;height:100%;object-fit:cover;opacity:0.5;display:block;"
+              src="/videos/hero_video.mp4"
+            ></video>
+            <script>
+              (function() {
+                var v = document.getElementById('hero-video');
+                if (v) {
+                  v.muted = true;
+                  v.defaultMuted = true;
+                  v.setAttribute('muted', '');
+                  var p = v.play();
+                  if (p !== undefined) { p.catch(function(){}); }
+                }
+              })();
+            </script>
           `
         }}
       />
