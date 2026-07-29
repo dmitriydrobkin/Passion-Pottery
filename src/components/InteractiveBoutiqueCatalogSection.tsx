@@ -43,7 +43,7 @@ export function InteractiveBoutiqueCatalogSection() {
       <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#E5E3DF] pb-8 mb-16 gap-6">
         <div>
           <h2 className="font-sans font-light text-3xl md:text-5xl text-[#121212]">
-            Авторська кераміка в наявності
+            Авторська кераміка <br className="block md:hidden" /> в наявності
           </h2>
         </div>
         
